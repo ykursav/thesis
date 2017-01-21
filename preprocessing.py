@@ -2,7 +2,7 @@
 from math import sqrt
 from cv2 import cvtColor, adaptiveThreshold, dilate, findContours, arcLength \
      , approxPolyDP, contourArea, warpPerspective, getPerspectiveTransform, resize, \
-     INTER_LINEAR, GaussianBlur, COLOR_BGR2GRAY, ADAPTIVE_THRESH_GAUSSIAN_C, \
+     INTER_LINEAR, GaussianBlur, COLOR_BGR2GRAY, COLOR_GRAY2BGR, ADAPTIVE_THRESH_GAUSSIAN_C, \
      THRESH_BINARY_INV, RETR_LIST, CHAIN_APPROX_SIMPLE, imwrite, Canny, INTER_NEAREST, \
      setUseOptimized, threshold, THRESH_BINARY, THRESH_OTSU, VideoWriter
      
@@ -51,6 +51,7 @@ def get_width_height(image):
     return [width, height]
 
 def get_edged(G):
+    global out
     gray = gray_image(image)
     blur = get_blurred(gray, G)
     th = adaptiveThreshold(blur, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY,11,2)
@@ -62,7 +63,8 @@ def get_edged(G):
 ##        cv2.waitKey(0)
 ##        cv2.destroyAllWindows()
     #imwrite("OTSU/otsu" + str(counter_warped) + ".jpg", th)
-    out.write(th)
+    #print get_width_height(th)
+    out.write(cvtColor(th, COLOR_GRAY2BGR))
     return dilate(th, ones((3,3), uint8),iterations = 1)
 # #@profile
 #def get_edged(G):
